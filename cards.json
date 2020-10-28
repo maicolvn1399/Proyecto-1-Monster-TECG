@@ -1,0 +1,331 @@
+{
+  "gameCards":[{
+    "id": 1,
+    "category":"esbirros",
+    "damage":50,
+    "cost":20,
+    "action":"lower_health" ,
+    "image":"",
+
+  },
+    {
+      "id": 2,
+      "category":"esbirros",
+      "damage":55,
+      "cost":25,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 3,
+      "category":"esbirros",
+      "damage":60,
+      "cost":30,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 4,
+      "category":"esbirros",
+      "damage":65,
+      "cost":35,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 5,
+      "category":"esbirros",
+      "damage":70,
+      "cost":40,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 6,
+      "category":"esbirros",
+      "damage":75,
+      "cost":45,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 7,
+      "category":"esbirros",
+      "damage":80,
+      "cost":50,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 8,
+      "category":"esbirros",
+      "damage":85,
+      "cost":55,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 9,
+      "category":"esbirros",
+      "damage":90,
+      "cost":60,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 10,
+      "category":"esbirros",
+      "damage":95,
+      "cost":65,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 11,
+      "category":"esbirros",
+      "damage":100,
+      "cost":70,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 12,
+      "category":"esbirros",
+      "damage":105,
+      "cost":75,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 13,
+      "category":"esbirros",
+      "damage":110,
+      "cost":80,
+      "action":"lower_health",
+      "image":""
+    },
+    {
+      "id": 14,
+      "category":"hechizos",
+      "damage":80,
+      "cost":40,
+      "action":"freeze",
+      "image":""
+    },
+    {
+      "id": 15,
+      "category":"hechizos",
+      "damage":0,
+      "cost":90,
+      "action":"supreme_power",
+      "image":""
+    },
+    {
+      "id": 16,
+      "category":"hechizos",
+      "damage":70,
+      "cost":60,
+      "action":"steal_card",
+      "image":""
+    },
+    {
+      "id": 17,
+      "category":"hechizos",
+      "damage":0,
+      "cost":40,
+      "action":"heal",
+      "image":""
+    },
+    {
+      "id": 18,
+      "category":"hechizos",
+      "damage":0,
+      "cost":55,
+      "action":"play_2_cards",
+      "image":""
+    },
+    {
+      "id": 19,
+      "category":"hechizos",
+      "damage":0,
+      "cost":60,
+      "action":"decrease_mana",
+      "image":""
+    },
+    {
+      "id": 20,
+      "category":"hechizos",
+      "damage":0,
+      "cost":40,
+      "action":"decrease_health_by_100",
+      "image":""
+    },
+    {
+      "id": 21,
+      "category":"hechizos",
+      "damage":0,
+      "cost":60,
+      "action":"freeze",
+      "image":""
+    },
+    {
+      "id": 22,
+      "category":"hechizos",
+      "damage":0,
+      "cost":70,
+      "action":"heal",
+      "image":""
+    },
+    {
+      "id": 23,
+      "category":"hechizos",
+      "damage":0,
+      "cost":65,
+      "action":"supreme_power",
+      "image":""
+    },
+    {
+      "id": 24,
+      "category":"hechizos",
+      "damage":0,
+      "cost":65,
+      "action":"steal_card",
+      "image":""
+    },
+    {
+      "id": 25,
+      "category":"hechizos",
+      "damage":0,
+      "cost":80,
+      "action":"play_2_cards",
+      "image":""
+    },
+    {
+      "id": 26,
+      "category":"hechizos",
+      "damage":0,
+      "cost":85,
+      "action":"decrease_mana",
+      "image":""
+    },
+    {
+      "id": 27,
+      "category":"hechizos",
+      "damage":0,
+      "cost":100,
+      "action":"decrease_health_by_100",
+      "image":""
+    },
+    {
+      "id": 28,
+      "category":"secrets",
+      "damage":30,
+      "cost":15,
+      "action":"play_sound",
+      "image":""
+    },
+    {
+      "id": 29,
+      "category":"secrets",
+      "damage":45,
+      "cost": 15,
+      "action":"change_background",
+      "image":""
+    },
+    {
+      "id": 30,
+      "category":"secrets",
+      "damage":47,
+      "cost":17,
+      "action":"play_animation",
+      "image":""
+    },
+    {
+      "id": 31,
+      "category":"secrets",
+      "damage":49,
+      "cost":19,
+      "action":"increase_mana_by_200",
+      "image":""
+    },
+    {
+      "id": 32,
+      "category":"secrets",
+      "damage":51,
+      "cost":21,
+      "action":"increase_health_by_150",
+      "image":""
+    },
+    {
+      "id": 33,
+      "category":"secrets",
+      "damage":53,
+      "cost":23,
+      "action":"players_heal",
+      "image":""
+    },
+    {
+      "id": 34,
+      "category":"secrets",
+      "damage":55,
+      "cost":25,
+      "action":"players_get_mana",
+      "image":""
+    },
+    {
+      "id": 35,
+      "category":"secrets",
+      "damage":57,
+      "cost":27,
+      "action":"play_sound",
+      "image":""
+    },
+    {
+      "id": 36,
+      "category":"secrets",
+      "damage":59,
+      "cost":29,
+      "action":"change_background",
+      "image":""
+    },
+    {
+      "id": 37,
+      "category":"secrets",
+      "damage":61,
+      "cost":31,
+      "action":"play_animation",
+      "image":""
+    },
+    {
+      "id": 38,
+      "category":"secrets",
+      "damage":63,
+      "cost":33,
+      "action":"increase_mana_by_200",
+      "image":""
+    },
+    {
+      "id": 39,
+      "category":"secrets",
+      "damage":65,
+      "cost":35,
+      "action":"increase_health_by_150",
+      "image":""
+    },
+    {
+      "id": 40,
+      "category":"secrets",
+      "damage":67,
+      "cost":37,
+      "action":"players_heal",
+      "image":""
+    }
+
+
+
+
+
+
+
+  ]
+}
