@@ -2,6 +2,7 @@ package cr.ac.tec.proyecto1.linearStructures;
 
 public class SingleList<T> {
 
+
     private Node<T> first;
     private int size;
 
@@ -241,9 +242,5 @@ public class SingleList<T> {
         this.first = null;
         this.size = 0;
     }
-
-
-
-
 
 }

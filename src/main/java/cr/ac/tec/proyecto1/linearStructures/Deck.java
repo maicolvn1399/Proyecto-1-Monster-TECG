@@ -1,8 +1,5 @@
 package cr.ac.tec.proyecto1.linearStructures;
 
-
-import cr.ac.tec.proyecto1.Card;
-
 public class Deck<T> {
 
     private Node<T> root;
@@ -24,11 +21,10 @@ public class Deck<T> {
     }
 
     public T pop(){
-        T poppedElement;
-        if (this.root == null){
+        if (this.isEmpty()){
             System.out.println("Stack Underflow");
         }
-        poppedElement = this.root.getValue();
+        T poppedElement = this.root.value;
         this.root = this.root.next;
         return poppedElement;
     }
@@ -45,9 +41,12 @@ public class Deck<T> {
         String deck = "--------\n";
         Node<T> temp = this.root;
         while (temp!=null){
-            
+            deck += "[ " + temp.getValue() + " ] \n";
+            temp = temp.next;
         }
-
+        deck = "--------\n";
+        return deck;
     }
+
 
 }

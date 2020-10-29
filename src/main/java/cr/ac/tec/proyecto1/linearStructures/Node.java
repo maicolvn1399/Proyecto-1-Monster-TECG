@@ -1,6 +1,7 @@
 package cr.ac.tec.proyecto1.linearStructures;
 
-public class Node<T>  {
+public class Node<T> {
+
     public T value;
     public Node next;
 
