@@ -2,12 +2,17 @@ package cr.ac.tec.proyecto1;
 
 public class Card {
 
+
     public int id;
     public String category;
     public int damage;
     public int cost;
     public String action;
     public String image;
+
+    /**
+     * Card class that allows to create the 40 cards for the game, gets all the attributes from a JSON file and transforms it into an object
+     */
 
 
     public void enlistCard(){
@@ -19,6 +24,7 @@ public class Card {
         System.out.println(this.action);
         System.out.println(this.image);
     }
+
 
     public int getId() {
         return id;

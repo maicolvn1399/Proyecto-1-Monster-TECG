@@ -3,8 +3,14 @@ package cr.ac.tec.proyecto1.linearStructures;
 public class SingleList<T> {
 
 
+
+
     private Node<T> first;
     private int size;
+
+    /**
+     * Simple linked list that is used to store the cards and that is used to make a stack that works as a deck for the cards
+     */
 
     public SingleList(){
 
@@ -12,6 +18,10 @@ public class SingleList<T> {
         this.size = 0;
     }
 
+    /**
+     * check if the list is empty
+     * @return
+     */
     public boolean isEmpty(){
         return this.first == null;
     }
@@ -53,10 +63,17 @@ public class SingleList<T> {
         size++;
     }
 
+    /**
+     * get size of the linked list
+     * @return
+     */
     public int getSize(){
         return size;
     }
 
+    /**
+     * print the list
+     */
     public void showList(){
 
         Node<T> current = this.first;
@@ -69,6 +86,11 @@ public class SingleList<T> {
     }
 
 
+    /**
+     * add and element by reference
+     * @param reference
+     * @param element
+     */
     public void addByReference(T reference,T element){
 
         Node<T> newNode = new Node<>();
@@ -91,6 +113,12 @@ public class SingleList<T> {
 
     }
 
+
+    /**
+     * finds a given element
+     * @param element
+     * @return
+     */
     public boolean findElement(T element){
 
         Node<T> aux = this.first;
@@ -107,6 +135,12 @@ public class SingleList<T> {
         return found;
     }
 
+
+    /**
+     * adds a new element to the list, it can be added anywhere
+     * @param position
+     * @param element
+     */
     public void addByPosition(int position, T element){
 
         if(position >= 0 && position <= this.size){
@@ -141,6 +175,12 @@ public class SingleList<T> {
         }
     }
 
+    /**
+     * gets an element from the list from a position given
+     * @param position
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
     public T getElement(int position) throws IndexOutOfBoundsException{
         if(position>=0 && position<this.size){
             if(position == 0){
@@ -158,6 +198,12 @@ public class SingleList<T> {
         }
     }
 
+    /**
+     * gets position of an element on the list
+     * @param element
+     * @return
+     * @throws IndexOutOfBoundsException
+     */
     public int getPosition(T element) throws IndexOutOfBoundsException{
         if(findElement(element)){
             Node aux = this.first;
@@ -175,6 +221,11 @@ public class SingleList<T> {
 
     }
 
+    /**
+     * edit an element given the element and a new value
+     * @param element
+     * @param value
+     */
     public void editByElement(T element, T value){
         if(findElement(element)){
             Node aux = this.first;
@@ -186,6 +237,12 @@ public class SingleList<T> {
         }
     }
 
+
+    /**
+     * edit the element given an index and the new element to replace
+     * @param index
+     * @param element
+     */
     public void editByIndex(int index, T element){
         if (index>=0 && index<this.size){
             if (index == 0){
@@ -200,6 +257,11 @@ public class SingleList<T> {
         }
     }
 
+
+    /**
+     * delete an element given the element to delete
+     * @param element
+     */
     public void deleteByElement(T element){
         if(findElement(element)){
             if(this.first.getValue()==element){
@@ -220,6 +282,10 @@ public class SingleList<T> {
         }
     }
 
+    /**
+     * Delete an element by the index
+     * @param index
+     */
     public void deleteByIndex(int index){
         if(index >= 0 && index<this.size){
             if (index == 0){
@@ -237,6 +303,10 @@ public class SingleList<T> {
             this.size--;
         }
     }
+
+    /**
+     * delete the list
+     */
 
     public void deleteList(){
         this.first = null;
