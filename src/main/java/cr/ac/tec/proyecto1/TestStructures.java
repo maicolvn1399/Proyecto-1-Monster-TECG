@@ -1,12 +1,11 @@
 package cr.ac.tec.proyecto1;
 
 import cr.ac.tec.proyecto1.linearStructures.Deck;
-import cr.ac.tec.proyecto1.linearStructures.Deck1;
 
 public class TestStructures {
 
     public static void main(String[] args) {
-        Deck1<Integer> deck = new Deck1<>();
+        Deck<Integer> deck = new Deck<>();
         deck.pop();
         deck.push(1);
         deck.push(2);
