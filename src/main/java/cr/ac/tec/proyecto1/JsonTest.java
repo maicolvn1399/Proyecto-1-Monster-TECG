@@ -32,7 +32,6 @@ public class JsonTest {
                 card.enlistCard();
             }
 
-
         }catch (Exception e){
             e.printStackTrace();
         }
