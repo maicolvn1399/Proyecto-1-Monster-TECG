@@ -19,6 +19,10 @@ public class Json {
         return objectMapper.readTree(jsonSource);
     }
 
+    public static <A> A fromJson(JsonNode node, Class<A> aClass) throws JsonProcessingException{
+        return objectMapper.treeToValue(node,aClass);
+    }
+
 
 
 }

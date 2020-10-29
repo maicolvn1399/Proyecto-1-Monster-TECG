@@ -3,6 +3,10 @@ package cr.ac.tec.proyecto1;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ *
+ *
+
 public class Deck {
     private Card[] cards;
     private int cardsInDeck;
@@ -47,3 +51,4 @@ public class Deck {
         return cards[--cardsInDeck];
    }
 }
+ */

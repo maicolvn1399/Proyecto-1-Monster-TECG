@@ -5,7 +5,7 @@
     "damage":50,
     "cost":20,
     "action":"lower_health" ,
-    "image":"",
+    "image":""
 
   },
     {
@@ -320,12 +320,5 @@
       "action":"players_heal",
       "image":""
     }
-
-
-
-
-
-
-
   ]
 }
