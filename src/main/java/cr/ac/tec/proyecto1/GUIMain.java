@@ -5,8 +5,11 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
 
 
 public class GUIMain extends Application {
@@ -27,6 +30,9 @@ public class GUIMain extends Application {
         Button btnCard3 = new Button("Card3");
         Button btnCard4 = new Button("Card4");
         Button btnDeck = new Button("Deck");
+
+      
+
         btnDeck.setPrefSize(100,150);
         btnCard4.setPrefSize(100,150);
         btnCard3.setPrefSize(100,150);
@@ -50,6 +56,7 @@ public class GUIMain extends Application {
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(true);
         stage.show();
 
 
