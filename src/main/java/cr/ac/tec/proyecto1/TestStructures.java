@@ -61,10 +61,6 @@ public class TestStructures {
         cdll.traverse();
         System.out.println();
         System.out.println("Size is "+cdll.getSize());
-
-
-
-
     }
 
 

@@ -162,7 +162,6 @@ public class CircularDoublyLinkedList<T> {
         return data;
     }
     /*methods related to deletion in circular doubly linked list ends
-
      */
 
 }
