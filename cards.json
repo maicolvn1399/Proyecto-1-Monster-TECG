@@ -5,7 +5,7 @@
     "damage":50,
     "cost":20,
     "action":"lower_health" ,
-    "image":""
+    "image":"weak_imp.png"
 
   },
     {
@@ -14,7 +14,7 @@
       "damage":55,
       "cost":25,
       "action":"lower_health",
-      "image":""
+      "image":"bot.png"
     },
     {
       "id": 3,
@@ -22,7 +22,7 @@
       "damage":60,
       "cost":30,
       "action":"lower_health",
-      "image":""
+      "image":"fireball.png"
     },
     {
       "id": 4,
@@ -30,7 +30,7 @@
       "damage":65,
       "cost":35,
       "action":"lower_health",
-      "image":""
+      "image":"ghost.png"
     },
     {
       "id": 5,
@@ -38,7 +38,7 @@
       "damage":70,
       "cost":40,
       "action":"lower_health",
-      "image":""
+      "image":"golem.png"
     },
     {
       "id": 6,
@@ -46,7 +46,7 @@
       "damage":75,
       "cost":45,
       "action":"lower_health",
-      "image":""
+      "image":"skeleton.png"
     },
     {
       "id": 7,
@@ -54,7 +54,7 @@
       "damage":80,
       "cost":50,
       "action":"lower_health",
-      "image":""
+      "image":"spider_king.png"
     },
     {
       "id": 8,
@@ -62,7 +62,7 @@
       "damage":85,
       "cost":55,
       "action":"lower_health",
-      "image":""
+      "image":"ancient_monster.png"
     },
     {
       "id": 9,
@@ -70,7 +70,7 @@
       "damage":90,
       "cost":60,
       "action":"lower_health",
-      "image":""
+      "image":"curse.png"
     },
     {
       "id": 10,
@@ -78,7 +78,7 @@
       "damage":95,
       "cost":65,
       "action":"lower_health",
-      "image":""
+      "image":"Poison_imp.PNG"
     },
     {
       "id": 11,
@@ -86,7 +86,7 @@
       "damage":100,
       "cost":70,
       "action":"lower_health",
-      "image":""
+      "image":"ghoul.png"
     },
     {
       "id": 12,
@@ -94,7 +94,7 @@
       "damage":105,
       "cost":75,
       "action":"lower_health",
-      "image":""
+      "image":"cultist.png"
     },
     {
       "id": 13,
@@ -102,7 +102,7 @@
       "damage":110,
       "cost":80,
       "action":"lower_health",
-      "image":""
+      "image":"predator.PNG"
     },
     {
       "id": 14,
@@ -110,7 +110,7 @@
       "damage":80,
       "cost":40,
       "action":"freeze",
-      "image":""
+      "image":"freeze.png"
     },
     {
       "id": 15,
@@ -118,7 +118,7 @@
       "damage":0,
       "cost":90,
       "action":"supreme_power",
-      "image":""
+      "image":"supreme_power.png"
     },
     {
       "id": 16,
@@ -126,7 +126,7 @@
       "damage":70,
       "cost":60,
       "action":"steal_card",
-      "image":""
+      "image":"steal_card.png"
     },
     {
       "id": 17,
@@ -134,7 +134,7 @@
       "damage":0,
       "cost":40,
       "action":"heal",
-      "image":""
+      "image":"heal.png"
     },
     {
       "id": 18,
@@ -142,7 +142,7 @@
       "damage":0,
       "cost":55,
       "action":"play_2_cards",
-      "image":""
+      "image":"play_2_cards.png"
     },
     {
       "id": 19,
@@ -150,7 +150,7 @@
       "damage":0,
       "cost":60,
       "action":"decrease_mana",
-      "image":""
+      "image":"decrease_mana.png"
     },
     {
       "id": 20,
@@ -158,7 +158,7 @@
       "damage":0,
       "cost":40,
       "action":"decrease_health_by_100",
-      "image":""
+      "image":"decrease_health.png"
     },
     {
       "id": 21,
@@ -166,7 +166,7 @@
       "damage":0,
       "cost":60,
       "action":"freeze",
-      "image":""
+      "image":"freeze.png"
     },
     {
       "id": 22,
@@ -174,7 +174,7 @@
       "damage":0,
       "cost":70,
       "action":"heal",
-      "image":""
+      "image":"heal.png"
     },
     {
       "id": 23,
@@ -182,7 +182,7 @@
       "damage":0,
       "cost":65,
       "action":"supreme_power",
-      "image":""
+      "image":"supreme_power.png"
     },
     {
       "id": 24,
@@ -190,7 +190,7 @@
       "damage":0,
       "cost":65,
       "action":"steal_card",
-      "image":""
+      "image":"steal_card.png"
     },
     {
       "id": 25,
@@ -198,7 +198,7 @@
       "damage":0,
       "cost":80,
       "action":"play_2_cards",
-      "image":""
+      "image":"play_2_cards.png"
     },
     {
       "id": 26,
@@ -206,7 +206,7 @@
       "damage":0,
       "cost":85,
       "action":"decrease_mana",
-      "image":""
+      "image":"decrease_mana.png"
     },
     {
       "id": 27,
@@ -214,7 +214,7 @@
       "damage":0,
       "cost":100,
       "action":"decrease_health_by_100",
-      "image":""
+      "image":"decrease_health.png"
     },
     {
       "id": 28,
@@ -222,7 +222,7 @@
       "damage":30,
       "cost":15,
       "action":"play_sound",
-      "image":""
+      "image":"play_sound.png"
     },
     {
       "id": 29,
@@ -230,7 +230,7 @@
       "damage":45,
       "cost": 15,
       "action":"change_background",
-      "image":""
+      "image":"change_background.png"
     },
     {
       "id": 30,
@@ -238,7 +238,7 @@
       "damage":47,
       "cost":17,
       "action":"play_animation",
-      "image":""
+      "image":"play_animation.png"
     },
     {
       "id": 31,
@@ -246,7 +246,7 @@
       "damage":49,
       "cost":19,
       "action":"increase_mana_by_200",
-      "image":""
+      "image":"increase_mana.png"
     },
     {
       "id": 32,
@@ -254,7 +254,7 @@
       "damage":51,
       "cost":21,
       "action":"increase_health_by_150",
-      "image":""
+      "image":"increase_health.png"
     },
     {
       "id": 33,
@@ -262,7 +262,7 @@
       "damage":53,
       "cost":23,
       "action":"players_heal",
-      "image":""
+      "image":"players_heal.png"
     },
     {
       "id": 34,
@@ -270,7 +270,7 @@
       "damage":55,
       "cost":25,
       "action":"players_get_mana",
-      "image":""
+      "image":"players_get_mana.png"
     },
     {
       "id": 35,
@@ -278,7 +278,7 @@
       "damage":57,
       "cost":27,
       "action":"play_sound",
-      "image":""
+      "image":"play_sound.png"
     },
     {
       "id": 36,
@@ -286,7 +286,7 @@
       "damage":59,
       "cost":29,
       "action":"change_background",
-      "image":""
+      "image":"change_background.png"
     },
     {
       "id": 37,
@@ -294,7 +294,7 @@
       "damage":61,
       "cost":31,
       "action":"play_animation",
-      "image":""
+      "image":"play_animation.png"
     },
     {
       "id": 38,
@@ -302,7 +302,7 @@
       "damage":63,
       "cost":33,
       "action":"increase_mana_by_200",
-      "image":""
+      "image":"increase_mana.png"
     },
     {
       "id": 39,
@@ -310,7 +310,7 @@
       "damage":65,
       "cost":35,
       "action":"increase_health_by_150",
-      "image":""
+      "image":"increase_health.png"
     },
     {
       "id": 40,
@@ -318,7 +318,7 @@
       "damage":67,
       "cost":37,
       "action":"players_heal",
-      "image":""
+      "image":"players_heal.png"
     }
   ]
 }
