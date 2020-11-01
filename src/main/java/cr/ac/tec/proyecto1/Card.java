@@ -16,6 +16,7 @@ public class Card {
 
 
     public void enlistCard(){
+        System.out.println("--------------------------------------------------------------------------------");
         System.out.println("New card created, these are the attributes:");
         System.out.println(this.id);
         System.out.println(this.category);
@@ -23,6 +24,7 @@ public class Card {
         System.out.println(this.cost);
         System.out.println(this.action);
         System.out.println(this.image);
+        System.out.println("--------------------------------------------------------------------------------");
     }
 
 

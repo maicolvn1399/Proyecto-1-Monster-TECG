@@ -1,26 +1,44 @@
 package cr.ac.tec.proyecto1;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import org.w3c.dom.ls.LSException;
 
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 
 
-public class PlayerGUI extends Application {
+public class PlayerGUI extends Application implements EventHandler<ActionEvent> {
 
     private int playerID;
     private int otherPlayer;
     private ClientSideConnection csc;
+    private int[] values;
+    private int maxTurns;
+    private int turnsMade;
+    private int myPoints;
+    private int enemyPoints;
+    private boolean buttonsEnabled;
+    private Label lbl_mana;
+    private Label lbl_health;
+    private Button btnCard1;
+    private Button btnCard2;
+    private Button btnCard3;
+    private Button btnCard4;
+
 
     public static void main(String[] args) {
         launch(args);
@@ -31,13 +49,18 @@ public class PlayerGUI extends Application {
     @Override
     public void start(Stage stage) throws FileNotFoundException {
 
-        stage.setTitle("Game GUI");
-        Label lbl_mana = new Label("Mana: ");
-        Label lbl_health = new Label("Health: ");
-        Button btnCard1 = new Button("card1");
-        Button btnCard2 = new Button("card2");
-        Button btnCard3 = new Button("card3");
-        Button btnCard4 = new Button("card4");
+        values = new int[4];
+        turnsMade = 0;
+        myPoints = 0;
+        enemyPoints = 0;
+
+
+        this.lbl_mana = new Label("Mana: ");
+        this.lbl_health = new Label("Health: ");
+        this.btnCard1 = new Button("1");
+        this.btnCard2 = new Button("2");
+        this.btnCard3 = new Button("3");
+        this.btnCard4 = new Button("4");
 
 
         Image img = new Image("cardback1.jpg");
@@ -72,11 +95,32 @@ public class PlayerGUI extends Application {
         if(this.playerID == 1){
             System.out.println("You're player #1, you go first");
             this.otherPlayer = 2;
+            this.buttonsEnabled = false;
         }else {
             System.out.println("You're player #2, wait for your turn");
             this.otherPlayer = 1;
+            this.buttonsEnabled = true;
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    updateTurn();
+                }
+            });
+            t.start();
         }
 
+
+        toggleButtons();
+
+
+        btnCard1.setOnAction(this);
+        btnCard2.setOnAction(this);
+        btnCard3.setOnAction(this);
+        btnCard4.setOnAction(this);
+
+
+
+        stage.setTitle("Monster - TECG - Player #"+this.playerID);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -84,9 +128,71 @@ public class PlayerGUI extends Application {
         stage.show();
     }
 
+    public void toggleButtons(){
+        btnCard1.setDisable(buttonsEnabled);
+        btnCard2.setDisable(buttonsEnabled);
+        btnCard3.setDisable(buttonsEnabled);
+        btnCard4.setDisable(buttonsEnabled);
+    }
+
+
+
+    public void updateTurn(){
+        int n = csc.receiveButtonNum();
+        System.out.println("Your enemy clicked button #"+n + ". Your turn");
+        enemyPoints += values[n-1];
+        System.out.println("Your enemy has " + enemyPoints + " points");
+        buttonsEnabled = false;
+        if(playerID == 1 && turnsMade == maxTurns ){
+            checkWinner();
+        }else {
+            buttonsEnabled = false;
+        }
+        toggleButtons();
+    }
+
     public void connectToServer(){
         this.csc = new ClientSideConnection();
     }
+
+    @Override
+    public void handle(ActionEvent actionEvent) {
+        Button b = (Button) actionEvent.getSource();
+        int bNum = Integer.parseInt(b.getText());
+        System.out.println("You clicked button #"+bNum+" Now wait for player #"+otherPlayer);
+        turnsMade ++;
+        System.out.println("Turns made " + turnsMade);
+        buttonsEnabled = true;
+        toggleButtons();
+        myPoints += values[bNum - 1];
+        System.out.println("My points: "+myPoints);
+        csc.sendButtonNum(bNum);
+
+        if (playerID == 2 && turnsMade == maxTurns){
+            checkWinner();
+        }else {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    updateTurn();
+                }
+            });
+            t.start();
+        }
+    }
+
+    private void checkWinner(){
+        buttonsEnabled = true;
+        if(myPoints > enemyPoints){
+            System.out.println("You won!\n" + "YOU: " + myPoints +"\n" + "ENEMY: " + enemyPoints );
+        }else if(myPoints < enemyPoints){
+            System.out.println("You lost!\n" + "YOU: " + myPoints +"\n" + "ENEMY: " + enemyPoints );
+        }else
+            System.out.println("It's a tie, you both got "+ myPoints + " points");
+
+        csc.closeConnection();
+    }
+
 
 
     private class ClientSideConnection{
@@ -102,12 +208,51 @@ public class PlayerGUI extends Application {
                 this.dataOut = new DataOutputStream(this.socket.getOutputStream());
                 playerID = dataIn.readInt();
                 System.out.println("Connected to the server as player #"+playerID+".");
-
+                maxTurns = dataIn.readInt()/2;
+                values[0] = dataIn.readInt();
+                values[1] = dataIn.readInt();
+                values[2] = dataIn.readInt();
+                values[3] = dataIn.readInt();
+                System.out.println("max turns "+ maxTurns);
+                System.out.println("value #1 "+ values[0]);
+                System.out.println("value #2 "+ values[1]);
+                System.out.println("value #3 "+ values[2]);
+                System.out.println("value #4 "+ values[3]);
 
             }catch (IOException e){
                 System.out.println("IOException from CSC constructor");
             }
         }
+
+        public void sendButtonNum(int n){
+            try {
+                dataOut.writeInt(n);
+                dataOut.flush();
+            }catch (IOException ex){
+                System.out.println("IOException from sendButtonNum() from CSC");
+            }
+        }
+
+        public int receiveButtonNum(){
+            int n = -1;
+            try {
+                n = dataIn.readInt();
+                System.out.println("Player #" + otherPlayer + " clicked button #"+n);
+            }catch (IOException ex){
+                System.out.println("IOException from receiveButtonNum() CSC ");
+            }
+            return n;
+        }
+
+        public void closeConnection(){
+            try {
+                socket.close();
+                System.out.println("---CONNECTION CLOSED----");
+            }catch (IOException ex){
+                System.out.println("IOException on closeConnection() CSC");
+            }
+        }
+
     }
 
 
