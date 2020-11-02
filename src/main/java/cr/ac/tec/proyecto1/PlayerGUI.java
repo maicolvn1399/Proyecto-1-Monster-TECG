@@ -41,7 +41,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private SingleList<Card> cardList;
     private JSONHandler jsonHandler;
     private int[] randomDeckIndexes;
-    private Deck<Card> cardDeck;
+    private Deck<Card> cardDeck = getCardDeck();
     private CircularDoublyLinkedList<Card> circularCardList;
 
 
@@ -149,14 +149,12 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         getCircularCardList().traverse();
         System.out.println("----- TESTING CIRCULAR LIST DONE ---- ");
 
-
         Image im = new Image(getCardDeck().peek().getImage());
         ImageView imv = new ImageView(im);
         imv.setFitWidth(100);
         imv.setFitHeight(150);
         imv.setPreserveRatio(true);
         btnCard1.setGraphic(imv);
-
 
 
         stage.setTitle("Monster - TECG - Player #"+this.playerID);
@@ -211,12 +209,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     public CircularDoublyLinkedList<Card> getCircularCardList(){
         this.circularCardList = new CircularDoublyLinkedList<>();
         for(int i = 0; i < 4; i++){
-            this.circularCardList.insertAtEnd(getCardDeck().peek());
-            getCardDeck().pop();
-
-
+            this.circularCardList.insertAtEnd(this.cardDeck.peek());
+            this.cardDeck.pop();
+            System.out.println(this.cardDeck.getSize());
         }
-        getCardDeck().showDeck();
         return this.circularCardList;
     }
 

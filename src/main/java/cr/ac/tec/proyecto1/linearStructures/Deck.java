@@ -34,4 +34,9 @@ public class Deck<T> {
         stack.showList();
     }
 
+    public int getSize(){
+        return stack.getSize();
+    }
+
+
 }
