@@ -1,6 +1,8 @@
-package cr.ac.tec.proyecto1;
+package cr.ac.tec.proyecto1.classTesting;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import cr.ac.tec.proyecto1.Card;
+import cr.ac.tec.proyecto1.jsonFileHandling.Json;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -30,6 +32,7 @@ public class JsonTest {
                 //System.out.println(node.get("gameCards").get(i));
                 Card card = Json.fromJson(node.get("gameCards").get(i),Card.class);
                 card.enlistCard();
+
             }
 
         }catch (Exception e){

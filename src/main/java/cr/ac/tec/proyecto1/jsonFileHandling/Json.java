@@ -1,4 +1,4 @@
-package cr.ac.tec.proyecto1;
+package cr.ac.tec.proyecto1.jsonFileHandling;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;

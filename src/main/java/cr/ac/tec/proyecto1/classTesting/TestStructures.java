@@ -1,4 +1,4 @@
-package cr.ac.tec.proyecto1;
+package cr.ac.tec.proyecto1.classTesting;
 
 import cr.ac.tec.proyecto1.linearStructures.CircularDoublyLinkedList;
 import cr.ac.tec.proyecto1.linearStructures.Deck;

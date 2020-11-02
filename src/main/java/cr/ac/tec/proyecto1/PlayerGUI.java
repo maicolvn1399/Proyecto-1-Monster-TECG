@@ -1,8 +1,12 @@
 package cr.ac.tec.proyecto1;
 
+
+import cr.ac.tec.proyecto1.jsonFileHandling.JSONHandler;
+import cr.ac.tec.proyecto1.linearStructures.CircularDoublyLinkedList;
+import cr.ac.tec.proyecto1.linearStructures.Deck;
+import cr.ac.tec.proyecto1.linearStructures.SingleList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -10,15 +14,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import org.w3c.dom.ls.LSException;
-
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
+import java.util.Random;
 
 
 public class PlayerGUI extends Application implements EventHandler<ActionEvent> {
@@ -38,6 +38,12 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private Button btnCard2;
     private Button btnCard3;
     private Button btnCard4;
+    private SingleList<Card> cardList;
+    private JSONHandler jsonHandler;
+    private int[] randomDeckIndexes;
+    private Deck<Card> cardDeck;
+    private CircularDoublyLinkedList<Card> circularCardList;
+
 
 
     public static void main(String[] args) {
@@ -53,6 +59,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         turnsMade = 0;
         myPoints = 0;
         enemyPoints = 0;
+
 
 
         this.lbl_mana = new Label("Mana: ");
@@ -112,11 +119,43 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
         toggleButtons();
 
-
         btnCard1.setOnAction(this);
         btnCard2.setOnAction(this);
         btnCard3.setOnAction(this);
         btnCard4.setOnAction(this);
+
+        /*
+        System.out.println("----- TESTING SINGLE CARD LIST ------- ");
+        //getCardsList().showList();
+
+        for(int i = 0; i < getCardsList().getSize()-1; i++){
+            getCardsList().getElement(i).enlistCard();
+        }
+
+        System.out.println("----- TESTING SINGLE CARD LIST DONE ------- ");
+
+
+        System.out.println("TESTING RANDOM INDEXES FOR DECK");
+        for(int i = 0; i < randomizeDeckIndexes().length; i ++){
+            System.out.println(randomizeDeckIndexes()[i]);
+        }
+
+        System.out.println("----- TESTING CARD DECK ----- ");
+        getCardDeck().peek().enlistCard();
+        System.out.println("----- TESTING CARD DECK DONE ----- ");
+
+         */
+        System.out.println("----- TESTING CIRCULAR LIST ---- ");
+        getCircularCardList().traverse();
+        System.out.println("----- TESTING CIRCULAR LIST DONE ---- ");
+
+
+        Image im = new Image(getCardDeck().peek().getImage());
+        ImageView imv = new ImageView(im);
+        imv.setFitWidth(100);
+        imv.setFitHeight(150);
+        imv.setPreserveRatio(true);
+        btnCard1.setGraphic(imv);
 
 
 
@@ -135,6 +174,51 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         btnCard4.setDisable(buttonsEnabled);
     }
 
+    public SingleList<Card> getCardsList(){
+        this.jsonHandler = new JSONHandler();
+        this.cardList = jsonHandler.getCardList();
+        return this.cardList;
+    }
+
+    public int[] randomizeDeckIndexes(){
+        this.randomDeckIndexes = new int[40];
+        for(int i = 0; i < this.randomDeckIndexes.length; i++){
+            this.randomDeckIndexes[i] = i;
+        }
+
+        Random randomGenerator = new Random();
+        int randomIndex;
+        int randomValue;
+
+        for(int i = 0; i < randomDeckIndexes.length; i++){
+            randomIndex = randomGenerator.nextInt(randomDeckIndexes.length);
+
+            randomValue = randomDeckIndexes[randomIndex];
+            randomDeckIndexes[randomIndex] = randomDeckIndexes[i];
+            randomDeckIndexes[i] = randomValue;
+        }
+        return randomDeckIndexes;
+    }
+
+    public Deck<Card> getCardDeck(){
+        this.cardDeck = new Deck<>();
+        for(int i = 0; i < 16; i++){
+            cardDeck.push(getCardsList().getElement(randomizeDeckIndexes()[i]));
+        }
+        return this.cardDeck;
+    }
+
+    public CircularDoublyLinkedList<Card> getCircularCardList(){
+        this.circularCardList = new CircularDoublyLinkedList<>();
+        for(int i = 0; i < 4; i++){
+            this.circularCardList.insertAtEnd(getCardDeck().peek());
+            getCardDeck().pop();
+
+
+        }
+        getCardDeck().showDeck();
+        return this.circularCardList;
+    }
 
 
     public void updateTurn(){

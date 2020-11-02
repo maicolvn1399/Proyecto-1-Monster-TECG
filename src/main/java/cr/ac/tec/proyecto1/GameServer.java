@@ -1,9 +1,7 @@
 package cr.ac.tec.proyecto1;
 
-
 import java.io.*;
 import java.net.*;
-
 
 public class GameServer {
 
