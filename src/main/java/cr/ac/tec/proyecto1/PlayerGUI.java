@@ -16,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+
 import java.io.*;
 import java.net.Socket;
 import java.util.Random;
@@ -32,8 +34,16 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private int myPoints;
     private int enemyPoints;
     private boolean buttonsEnabled;
+    private int health;
+    private int mana;
+    private int enemyHealth;
+    private int enemyMana;
+    private Label lbl_mana_status;
+    private Label lbl_health_status;
     private Label lbl_mana;
     private Label lbl_health;
+    private Label lbl_enemy_health_status;
+    private Label lbl_enemy_health;
     private Button btnCard1;
     private Button btnCard2;
     private Button btnCard3;
@@ -43,7 +53,6 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private int[] randomDeckIndexes;
     private Deck<Card> cardDeck = getCardDeck();
     private CircularDoublyLinkedList<Card> circularCardList = getCircularCardList();
-
 
 
     public static void main(String[] args) {
@@ -64,9 +73,21 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         myPoints = 0;
         enemyPoints = 0;
 
+        this.health = 1000;
+        this.mana = 200;
+        this.enemyHealth = 1000;
+        this.enemyMana = 200;
+
 
         this.lbl_mana = new Label("Mana: ");
         this.lbl_health = new Label("Health: ");
+        this.lbl_enemy_health = new Label("Enemy health: ");
+        this.lbl_enemy_health_status = new Label(String.valueOf(this.enemyHealth));
+
+        this.lbl_mana_status = new Label(String.valueOf(this.mana));
+        this.lbl_health_status = new Label(String.valueOf(this.health));
+
+
         this.btnCard1 = new Button();
         this.btnCard2 = new Button();
         this.btnCard3 = new Button();
@@ -100,6 +121,12 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
         root.add(lbl_mana, 0, 0);
         root.add(lbl_health,0,1);
+        root.add(lbl_health_status,1,1);
+        root.add(lbl_mana_status,1,0);
+
+        root.add(lbl_enemy_health,2,0);
+        root.add(lbl_enemy_health_status,3,0);
+
         root.add(btnCard1,0,40);
         root.add(btnCard2,1,40);
         root.add(btnCard3,2,40);
@@ -143,15 +170,6 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
         System.out.println("Size of circular list " + this.circularCardList.getSize());
 
-        /*
-        Image im = new Image(this.circularCardList.getElement(0).getImage());
-        ImageView imv = new ImageView(im);
-        imv.setFitWidth(100);
-        imv.setFitHeight(150);
-        imv.setPreserveRatio(true);
-        btnCard1.setGraphic(imv);
-
-         */
 
         Button buttons[] = {this.btnCard1,this.btnCard2,this.btnCard3,this.btnCard4};
         for (int i = 0; i < buttons.length; i++){
@@ -162,8 +180,6 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
             imageView.setPreserveRatio(true);
             buttons[i].setGraphic(imageView);
         }
-
-
 
         stage.setTitle("Monster - TECG - Player #"+this.playerID);
 
@@ -252,8 +268,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     public void updateTurn(){
         int n = csc.receiveButtonNum();
         System.out.println("Your enemy clicked button #"+n + ". Your turn");
-        enemyPoints += values[n-1];
-        System.out.println("Your enemy has " + enemyPoints + " points");
+        //enemyPoints += values[n-1];
+        this.enemyHealth -= this.circularCardList.getElement(n-1).getDamage();//gets the damage of the card and decreases the health of enemy
+        this.lbl_enemy_health_status.setText(String.valueOf(this.enemyHealth)); //shows the damage of enemy in a label
+        System.out.println("Your enemy has " + this.enemyHealth + " health");
         buttonsEnabled = false;
         if(playerID == 1 && turnsMade == maxTurns ){
             checkWinner();
@@ -276,26 +294,27 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
      */
     @Override
     public void handle(ActionEvent actionEvent) {
-        Button b = (Button) actionEvent.getSource();
+        Button b = (Button) actionEvent.getSource();// gets the button that was pressed
         System.out.println("Pressed button: " + b);
         int bNum = Integer.parseInt(b.getId());
         System.out.println("You clicked button #"+bNum+" Now wait for player #"+otherPlayer);
         turnsMade ++;
         System.out.println("Turns made " + turnsMade);
         buttonsEnabled = true;
-        toggleButtons();
+        toggleButtons(); //enables and disables the interface when other player has to select a card
         //myPoints += values[bNum - 1];
         System.out.println(this.circularCardList.getElement(bNum-1).getCardInfo());
-        myPoints += this.circularCardList.getElement(bNum-1).getDamage();
-        this.circularCardList.remove(bNum-1);
-        this.circularCardList.insertAtPosition(this.cardDeck.peek(),bNum-1);
-        this.cardDeck.pop();
+        this.health -= this.circularCardList.getElement(bNum-1).getDamage(); //gets the damage of the card and decreases the health of the player
+        this.lbl_health_status.setText(String.valueOf(this.health));//shows the value of health in a label
+        this.circularCardList.remove(bNum-1); //removes the card that was already played from the circular list
+        this.circularCardList.insertAtPosition(this.cardDeck.peek(),bNum-1); //inserts a new card from the deck to the circular list
+        this.cardDeck.pop(); // delete the card that is now on the circular list
 
-        updateButtonImages();
+        updateButtonImages();//update images of cards
 
         System.out.println(this.cardDeck.getSize());
         System.out.println(this.circularCardList.getSize());
-        System.out.println("My points: "+myPoints);
+        System.out.println("My health: "+this.health);
         csc.sendButtonNum(bNum);
 
         if (playerID == 2 && turnsMade == maxTurns){
@@ -311,6 +330,9 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         }
     }
 
+    /**
+     * update the images of the cards in the buttons
+     */
     public void updateButtonImages(){
         Button[] buttons = {this.btnCard1,this.btnCard2,this.btnCard3,this.btnCard4};
         for (int i = 0; i < buttons.length; i++){
@@ -324,16 +346,16 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     }
 
     /**
-     *
+     *checks winner
      */
     private void checkWinner(){
         buttonsEnabled = true;
-        if(myPoints > enemyPoints){
-            System.out.println("You won!\n" + "YOU: " + myPoints +"\n" + "ENEMY: " + enemyPoints );
-        }else if(myPoints < enemyPoints){
-            System.out.println("You lost!\n" + "YOU: " + myPoints +"\n" + "ENEMY: " + enemyPoints );
+        if(health > enemyHealth){
+            System.out.println("You won!\n" + "YOU: " + health +"\n" + "ENEMY: " + enemyHealth );
+        }else if(health < enemyHealth){
+            System.out.println("You lost!\n" + "YOU: " + health +"\n" + "ENEMY: " + enemyHealth );
         }else
-            System.out.println("It's a tie, you both got "+ myPoints + " points");
+            System.out.println("It's a tie, you both got "+ health + " points");
 
         csc.closeConnection();
     }
