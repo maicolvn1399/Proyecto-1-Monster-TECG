@@ -80,6 +80,11 @@ public class GameServer {
         private int playerID;
 
 
+        /**
+         * makes a connection with the server and defines the player ID
+         * @param s
+         * @param id
+         */
         public ServerSideConnection(Socket s, int id) {
             this.socket = s;
             this.playerID = id;
@@ -126,6 +131,10 @@ public class GameServer {
             }
         }
 
+        /**
+         * sends data to a socket
+         * @param n
+         */
         public void sendButtonNum(int n){
             try{
                 dataOut.writeInt(n);
@@ -135,6 +144,9 @@ public class GameServer {
             }
         }
 
+        /**
+         * closes the connection between sockets
+         */
         public void closeConnection(){
             try{
                 socket.close();
@@ -145,7 +157,6 @@ public class GameServer {
             }
 
         }
-
     }
 
     /**

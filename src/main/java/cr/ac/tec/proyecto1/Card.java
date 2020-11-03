@@ -14,7 +14,6 @@ public class Card {
      * Card class that allows to create the 40 cards for the game, gets all the attributes from a JSON file and transforms it into an object
      */
 
-
     public void enlistCard(){
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("New card created, these are the attributes:");
@@ -27,6 +26,18 @@ public class Card {
         System.out.println("--------------------------------------------------------------------------------");
     }
 
+    public String getCardInfo(){
+        String cardInfo = this.getId() + "\n" + this.getCategory() + "\n"+ this.getDamage() + "\n"
+                +  this.getCost() + "\n" + this.getAction() + "\n" + this.getImage();
+
+        return cardInfo;
+    }
+
+
+    /**
+     * getters and setters for each attribute of card class
+     * @return attibutes from the cards
+     */
 
     public int getId() {
         return id;

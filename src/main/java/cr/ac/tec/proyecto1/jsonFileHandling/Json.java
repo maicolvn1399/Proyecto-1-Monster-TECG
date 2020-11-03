@@ -8,6 +8,10 @@ import java.io.IOException;
 
 public class Json {
 
+    /**
+     * class that gets an object mapper to read data from the .json file defined previously
+     */
+
     private static ObjectMapper objectMapper = getObjectMapper();
 
     private static ObjectMapper getObjectMapper(){

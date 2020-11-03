@@ -42,7 +42,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private JSONHandler jsonHandler;
     private int[] randomDeckIndexes;
     private Deck<Card> cardDeck = getCardDeck();
-    private CircularDoublyLinkedList<Card> circularCardList;
+    private CircularDoublyLinkedList<Card> circularCardList = getCircularCardList();
 
 
 
@@ -51,7 +51,11 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
     }
 
-
+    /**
+     * sets up the GUI for the players
+     * @param stage
+     * @throws FileNotFoundException
+     */
     @Override
     public void start(Stage stage) throws FileNotFoundException {
 
@@ -61,13 +65,18 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         enemyPoints = 0;
 
 
-
         this.lbl_mana = new Label("Mana: ");
         this.lbl_health = new Label("Health: ");
-        this.btnCard1 = new Button("1");
-        this.btnCard2 = new Button("2");
-        this.btnCard3 = new Button("3");
-        this.btnCard4 = new Button("4");
+        this.btnCard1 = new Button();
+        this.btnCard2 = new Button();
+        this.btnCard3 = new Button();
+        this.btnCard4 = new Button();
+
+        this.btnCard1.setId("1");
+        this.btnCard2.setId("2");
+        this.btnCard3.setId("3");
+        this.btnCard4.setId("4");
+
 
 
         Image img = new Image("cardback1.jpg");
@@ -124,37 +133,36 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         btnCard3.setOnAction(this);
         btnCard4.setOnAction(this);
 
-        /*
-        System.out.println("----- TESTING SINGLE CARD LIST ------- ");
-        //getCardsList().showList();
 
-        for(int i = 0; i < getCardsList().getSize()-1; i++){
-            getCardsList().getElement(i).enlistCard();
-        }
-
-        System.out.println("----- TESTING SINGLE CARD LIST DONE ------- ");
-
-
-        System.out.println("TESTING RANDOM INDEXES FOR DECK");
-        for(int i = 0; i < randomizeDeckIndexes().length; i ++){
-            System.out.println(randomizeDeckIndexes()[i]);
-        }
-
-        System.out.println("----- TESTING CARD DECK ----- ");
-        getCardDeck().peek().enlistCard();
-        System.out.println("----- TESTING CARD DECK DONE ----- ");
-
-         */
         System.out.println("----- TESTING CIRCULAR LIST ---- ");
-        getCircularCardList().traverse();
+        //getCircularCardList().traverse();
+        System.out.println("Testing getElement() of circularCardList");
+        this.circularCardList.getElement(0).enlistCard();
+        System.out.println("Testing of getElement() done ");
         System.out.println("----- TESTING CIRCULAR LIST DONE ---- ");
 
-        Image im = new Image(getCardDeck().peek().getImage());
+        System.out.println("Size of circular list " + this.circularCardList.getSize());
+
+        /*
+        Image im = new Image(this.circularCardList.getElement(0).getImage());
         ImageView imv = new ImageView(im);
         imv.setFitWidth(100);
         imv.setFitHeight(150);
         imv.setPreserveRatio(true);
         btnCard1.setGraphic(imv);
+
+         */
+
+        Button buttons[] = {this.btnCard1,this.btnCard2,this.btnCard3,this.btnCard4};
+        for (int i = 0; i < buttons.length; i++){
+            Image image = new Image(this.circularCardList.getElement(i).getImage());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitHeight(150);
+            imageView.setFitWidth(100);
+            imageView.setPreserveRatio(true);
+            buttons[i].setGraphic(imageView);
+        }
+
 
 
         stage.setTitle("Monster - TECG - Player #"+this.playerID);
@@ -165,6 +173,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         stage.show();
     }
 
+
+    /**
+     * Allows to disable the buttons when the other player has a turn
+     */
     public void toggleButtons(){
         btnCard1.setDisable(buttonsEnabled);
         btnCard2.setDisable(buttonsEnabled);
@@ -172,12 +184,20 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         btnCard4.setDisable(buttonsEnabled);
     }
 
+    /**
+     * gets a single linked list of cards
+     * @return cardList
+     */
     public SingleList<Card> getCardsList(){
         this.jsonHandler = new JSONHandler();
         this.cardList = jsonHandler.getCardList();
         return this.cardList;
     }
 
+    /**
+     * makes a list of indexes that allows to shuffle the deck of cards
+     * @return randomDeckIndexes
+     */
     public int[] randomizeDeckIndexes(){
         this.randomDeckIndexes = new int[40];
         for(int i = 0; i < this.randomDeckIndexes.length; i++){
@@ -198,6 +218,11 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         return randomDeckIndexes;
     }
 
+
+    /**
+     * get a deck of cards
+     * @return cardDeck
+     */
     public Deck<Card> getCardDeck(){
         this.cardDeck = new Deck<>();
         for(int i = 0; i < 16; i++){
@@ -206,6 +231,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         return this.cardDeck;
     }
 
+    /**
+     * gets a circular list of cards, this list is the first hand of cards that the game uses
+     * @return circularCardList
+     */
     public CircularDoublyLinkedList<Card> getCircularCardList(){
         this.circularCardList = new CircularDoublyLinkedList<>();
         for(int i = 0; i < 4; i++){
@@ -217,6 +246,9 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     }
 
 
+    /**
+     * updates the turns for the players
+     */
     public void updateTurn(){
         int n = csc.receiveButtonNum();
         System.out.println("Your enemy clicked button #"+n + ". Your turn");
@@ -231,20 +263,38 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         toggleButtons();
     }
 
+    /**
+     * connects to the server
+     */
     public void connectToServer(){
         this.csc = new ClientSideConnection();
     }
 
+    /**
+     * button handler
+     * @param actionEvent
+     */
     @Override
     public void handle(ActionEvent actionEvent) {
         Button b = (Button) actionEvent.getSource();
-        int bNum = Integer.parseInt(b.getText());
+        System.out.println("Pressed button: " + b);
+        int bNum = Integer.parseInt(b.getId());
         System.out.println("You clicked button #"+bNum+" Now wait for player #"+otherPlayer);
         turnsMade ++;
         System.out.println("Turns made " + turnsMade);
         buttonsEnabled = true;
         toggleButtons();
-        myPoints += values[bNum - 1];
+        //myPoints += values[bNum - 1];
+        System.out.println(this.circularCardList.getElement(bNum-1).getCardInfo());
+        myPoints += this.circularCardList.getElement(bNum-1).getDamage();
+        this.circularCardList.remove(bNum-1);
+        this.circularCardList.insertAtPosition(this.cardDeck.peek(),bNum-1);
+        this.cardDeck.pop();
+
+        updateButtonImages();
+
+        System.out.println(this.cardDeck.getSize());
+        System.out.println(this.circularCardList.getSize());
         System.out.println("My points: "+myPoints);
         csc.sendButtonNum(bNum);
 
@@ -261,6 +311,21 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         }
     }
 
+    public void updateButtonImages(){
+        Button[] buttons = {this.btnCard1,this.btnCard2,this.btnCard3,this.btnCard4};
+        for (int i = 0; i < buttons.length; i++){
+            Image image = new Image(this.circularCardList.getElement(i).getImage());
+            ImageView imageView = new ImageView(image);
+            imageView.setFitWidth(100);
+            imageView.setFitHeight(150);
+            imageView.setPreserveRatio(true);
+            buttons[i].setGraphic(imageView);
+        }
+    }
+
+    /**
+     *
+     */
     private void checkWinner(){
         buttonsEnabled = true;
         if(myPoints > enemyPoints){
@@ -274,7 +339,9 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     }
 
 
-
+    /**
+     * inner class that allows to make a connection with both players
+     */
     private class ClientSideConnection{
         private Socket socket;
         private DataInputStream dataIn;
@@ -304,6 +371,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
             }
         }
 
+        /**
+         * sends data to socket
+         * @param n
+         */
         public void sendButtonNum(int n){
             try {
                 dataOut.writeInt(n);
@@ -313,6 +384,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
             }
         }
 
+        /**
+         * receives data from socket
+         * @return number selected
+         */
         public int receiveButtonNum(){
             int n = -1;
             try {
@@ -324,6 +399,9 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
             return n;
         }
 
+        /**
+         * closes the connection between sockets
+         */
         public void closeConnection(){
             try {
                 socket.close();

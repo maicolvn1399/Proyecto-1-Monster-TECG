@@ -10,6 +10,9 @@ import java.io.FileReader;
 
 public class JSONHandler {
 
+    /**
+     * Class that works as a handler to get data from the cards.json file
+     */
     private SingleList<Card> cardList;
 
     public JSONHandler() {
@@ -39,9 +42,7 @@ public class JSONHandler {
                 Card card = Json.fromJson(node.get("gameCards").get(i),Card.class);
                 //card.enlistCard();
                 cardList.add(card);
-
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }

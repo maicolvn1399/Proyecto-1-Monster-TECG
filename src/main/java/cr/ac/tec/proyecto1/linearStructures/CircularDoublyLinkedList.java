@@ -60,6 +60,23 @@ public class CircularDoublyLinkedList<T> {
         }
     }
 
+    public T getElement(int position){
+        if (position>= 0 && position<this.getSize()){
+            if (position == 0){
+                return this.head.getData();
+            }else {
+                CDNode<T> aux = this.head;
+                for (int i = 0; i < position; i ++){
+                    aux = aux.getNext();
+                }
+                return aux.getData();
+            }
+        }else {
+            throw new IndexOutOfBoundsException("Position is non existent on the list");
+        }
+    }
+
+
     public void insertAtEnd(T data){
         CDNode<T> newNode = new CDNode<>(data);
         if (this.head == null){
@@ -163,5 +180,7 @@ public class CircularDoublyLinkedList<T> {
     }
     /*methods related to deletion in circular doubly linked list ends
      */
+
+
 
 }
