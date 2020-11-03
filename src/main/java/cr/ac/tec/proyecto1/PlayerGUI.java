@@ -28,7 +28,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private int playerID;
     private int otherPlayer;
     private ClientSideConnection csc;
-    private int[] values;
+    private int[] values;//*
     private int maxTurns;
     private int turnsMade;
     private int myPoints;
