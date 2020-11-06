@@ -16,14 +16,18 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import java.io.File;
 
 
-import javax.accessibility.AccessibleStateSet;
-import javax.sound.midi.Soundbank;
+
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
-import java.sql.SQLOutput;
 import java.util.Random;
 
 
@@ -58,6 +62,10 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private Deck<Card> cardDeck = getCardDeck();
     private CircularDoublyLinkedList<Card> circularCardList = getCircularCardList();
     private Card[] cards = jsonHandler.getCardsArray();
+    private String[] backgrounds = {"-fx-background-image: url('bg2.jpg');","-fx-background-image: url('bg3.jpg');","-fx-background-image: url('bg4.jpg');"
+    ,"-fx-background-image: url('bg5.jpg');","-fx-background-image: url('bg6.jpg');","-fx-background-image: url('bg7.jpg');"};
+
+    private GridPane root;
 
 
 
@@ -87,12 +95,21 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
 
         this.lbl_mana = new Label("Mana: ");
+        this.lbl_mana.setFont(new Font("Impact", 30));
+        this.lbl_mana.setStyle("-fx-background-color: #bdcf95");
+
         this.lbl_health = new Label("Health: ");
-        this.lbl_enemy_health = new Label("Enemy health: ");
-        this.lbl_enemy_health_status = new Label(String.valueOf(this.enemyHealth));
+        this.lbl_health.setFont(new Font("Impact", 30));
+        this.lbl_health.setStyle("-fx-background-color: #bdcf95");
 
         this.lbl_mana_status = new Label(String.valueOf(this.mana));
+        this.lbl_mana_status.setFont(new Font("Impact", 30));
+        this.lbl_mana_status.setStyle("-fx-background-color: #bdcf95");
+
         this.lbl_health_status = new Label(String.valueOf(this.health));
+        this.lbl_health_status.setFont(new Font("Impact", 30));
+        this.lbl_health_status.setStyle("-fx-background-color: #bdcf95");
+
 
 
         this.btnCard1 = new Button();
@@ -119,7 +136,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         btnCard2.setPrefSize(100,150);
         btnCard1.setPrefSize(100,150);
 
-        GridPane root = new GridPane();
+        root = new GridPane();
 
         root.setHgap(5);
         root.setVgap(5);
@@ -130,8 +147,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         root.add(lbl_health_status,1,1);
         root.add(lbl_mana_status,1,0);
 
-        root.add(lbl_enemy_health,2,0);
-        root.add(lbl_enemy_health_status,3,0);
+
 
         root.add(btnCard1,0,40);
         root.add(btnCard2,1,40);
@@ -176,6 +192,12 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
         System.out.println("Size of circular list " + this.circularCardList.getSize());
 
+        root.setStyle("-fx-background-image: url('bg2.jpg');"
+                + "-fx-background-position:center;"
+                + "-fx-background-repeat:no-repeat;"
+                + "-fx-background-size:auto;"
+                + "-fx-background-color:#000000");
+
 
         Button buttons[] = {this.btnCard1,this.btnCard2,this.btnCard3,this.btnCard4};
         for (int i = 0; i < buttons.length; i++){
@@ -189,9 +211,11 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
 
         stage.setTitle("Monster - TECG - Player #"+this.playerID);
 
+
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        stage.setResizable(true);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -286,7 +310,6 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         }
 
 
-
         System.out.println("Damage points received :"+ n);
 
         //this.enemyHealth -= this.circularCardList.getElement(n-1).getDamage();//gets the damage of the card and decreases the health of enemy
@@ -332,6 +355,9 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         System.out.println("Damage: " + this.circularCardList.getElement(bNum-1).getDamage());
 
         int damage = this.circularCardList.getElement(bNum-1).getDamage();
+        Card auxCard = this.circularCardList.getElement(bNum-1);
+        executeCard(auxCard);
+
 
 
         /*
@@ -355,8 +381,6 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         //csc.sendButtonNum(bNum);
 
         csc.sendDamage(damage);
-
-
 
         if (playerID == 2 && turnsMade == maxTurns){
             checkWinner();
@@ -384,6 +408,111 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
             imageView.setPreserveRatio(true);
             buttons[i].setGraphic(imageView);
         }
+    }
+
+    public void executeCard(Card card){
+        if (card.getCategory().equalsIgnoreCase("esbirros")){
+            showDialogEsbirrosCard(card.getDamage());
+        }else if(card.getCategory().equalsIgnoreCase("hechizos")){
+            executeHechizosCard(card);
+        }else if(card.getCategory().equalsIgnoreCase("secrets")){
+            executeSecretsCard(card);
+        }
+    }
+
+
+    public void executeSecretsCard(Card card){
+        switch (card.getAction()){
+            case "change_background":
+                changeGameBackground();
+                break;
+            case "play_sound":
+        }
+    }
+
+    public void play_sound(){
+        AudioClip note = new AudioClip("resources/gameSound.mp3");
+        note.play();
+    }
+
+
+    public void changeGameBackground(){
+        int rnd = new Random().nextInt(this.backgrounds.length);
+        String bg = this.backgrounds[rnd];
+
+        this.root.setStyle(bg
+                + "-fx-background-position:center;"
+                + "-fx-background-repeat:no-repeat;"
+                + "-fx-background-size:auto;"
+                + "-fx-background-color:#000000");
+    }
+
+
+    public void executeHechizosCard(Card card){
+        switch (card.getAction()){
+            case "freeze":
+                toggleButtons();
+                turnsMade++;
+                toggleButtons();
+                break;
+            case "supreme_power":
+                System.out.println("Supreme power");
+                break;
+            case "heal":
+                heal_player();
+                break;
+            case "decrease_health_by_100":
+                decrease_health();
+                break;
+            case "steal_card":
+                steal_card();
+
+        }
+    }
+
+    public void heal_player(){
+        if (playerID == 1){
+            this.health += 100;
+            JOptionPane.showMessageDialog(null,"You have played an Hechizos card that healed\n" +
+                    "your health by 100, your new health is " + this.health);
+        }else {
+            this.enemyHealth += 100;
+            JOptionPane.showMessageDialog(null,"You have played an Hechizos card that healed\n" +
+                    "your health by 100, your new health is " + this.enemyHealth);
+        }
+    }
+
+    public void decrease_health(){
+        if (playerID == 1){
+            this.health -= 100;
+            JOptionPane.showMessageDialog(null,"You have played an Hechizos card and you hurt your\n" +
+                    "own health, your health will be decreased by -100");
+        }else {
+            this.enemyHealth -= 100;
+            JOptionPane.showMessageDialog(null,"You have played an Hechizos card and you hurt your\n" +
+                    "own health, your health will be decreased by -100");
+        }
+    }
+
+    public void steal_card(){
+        Random random = new Random();
+        Card stolenCard = this.cardList.getElement(random.nextInt(cardList.getSize()));
+        this.cardDeck.push(stolenCard);
+
+        ImageIcon imageIcon = new ImageIcon(stolenCard.getImage());
+        JOptionPane.showMessageDialog(null,"You have stolen a card from your opponent\n" +
+                "This is the new card added to your deck: \n" +
+                stolenCard.getCardInfo(), "Stolen card",JOptionPane.INFORMATION_MESSAGE,imageIcon);
+    }
+
+
+    /**
+     * shows a window to let the player know the kind of card that is playing
+     * @param damage
+     */
+    public void showDialogEsbirrosCard(int damage){
+        JOptionPane.showMessageDialog(null,"You have selected an Esbirros card this will lower the \n" +
+                "health of your opponent by " + damage + " points of damage");
     }
 
     public int getCardsIndex(Card card){
@@ -499,9 +628,6 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
             return n;
         }
 
-
-
-       
 
         public int receiveDamage(){
             int n = -1;
