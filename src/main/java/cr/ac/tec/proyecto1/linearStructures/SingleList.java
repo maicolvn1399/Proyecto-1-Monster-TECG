@@ -126,7 +126,7 @@ public class SingleList<T> {
         boolean found = false;
 
         while (aux != null && found != true) {
-            if (element == aux.getValue()) {
+            if (element.equals(aux.getValue())) {
                 found = true;
             } else {
                 aux = aux.getNext();

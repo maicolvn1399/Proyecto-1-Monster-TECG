@@ -1,6 +1,6 @@
 package cr.ac.tec.proyecto1;
 
-public class Card {
+public class Card extends Object {
 
 
     public int id;
