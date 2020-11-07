@@ -21,17 +21,19 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.scene.control.TextArea;
 import java.io.File;
 
 
-
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Random;
 
 
-public class PlayerGUI extends Application implements EventHandler<ActionEvent> {
+public class PlayerGUI extends Application implements EventHandler<ActionEvent> , Subject{
 
     private int playerID;
     private int otherPlayer;
@@ -52,6 +54,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private Label lbl_health;
     private Label lbl_enemy_health_status;
     private Label lbl_enemy_health;
+    public static TextArea historial;
     private Button btnCard1;
     private Button btnCard2;
     private Button btnCard3;
@@ -62,6 +65,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
     private Deck<Card> cardDeck = getCardDeck();
     private CircularDoublyLinkedList<Card> circularCardList = getCircularCardList();
     private Card[] cards = jsonHandler.getCardsArray();
+    private List<Listener> liss = new ArrayList<>();
     private String[] backgrounds = {"-fx-background-image: url('bg2.jpg');","-fx-background-image: url('bg3.jpg');","-fx-background-image: url('bg4.jpg');"
     ,"-fx-background-image: url('bg5.jpg');","-fx-background-image: url('bg6.jpg');","-fx-background-image: url('bg7.jpg');"};
 
@@ -122,6 +126,9 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         this.btnCard3.setId("3");
         this.btnCard4.setId("4");
 
+        this.historial = new TextArea();
+        historial.setMaxSize(200,900);
+
 
         Image img = new Image("cardback1.jpg");
         ImageView imgView = new ImageView(img);
@@ -154,6 +161,12 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         root.add(btnCard3,2,40);
         root.add(btnCard4,3,40);
         root.add(btnDeck,1,20);
+
+        root.add(historial,3, 20);
+        historial.setText("Historial de Jugadas");
+
+        Listener l1 = new Listener();
+        this.listen(l1);
 
         connectToServer();
 
@@ -291,30 +304,45 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         return this.circularCardList;
     }
 
+    @Override
+    public void listen(Listener lis) {
+        liss.add(lis);
+    }
+
+    @Override
+    public void notifyListener(String m) {
+        for (Listener lis : liss)  {
+            lis.update(m);
+        }
+    }
 
     /**
      * updates the turns for the players
      */
     public void updateTurn(){
-        //int n = csc.receiveButtonNum();
-        int n = csc.receiveDamage();
-        System.out.println("Your enemy clicked button #"+n + ". Your turn");
+        int n = csc.receiveButtonNum();
+        //int n = csc.receiveDamage();
+        System.out.println("Your enemy used card #"+n + ". Your turn");
+        notifyListener("Player" + otherPlayer+" used card #"+ cardList.getElement(n-1).getId());
         //enemyPoints += values[n-1];
         //Card auxCard = this.circularCardList.getElement(n-1);
         //int position = this.getCardsIndex(auxCard);
 
+        this.health -= cardList.getElement(n-1).damage;
+/*
         if (playerID == 1){
-            this.health -= n;
+            this.health -= cardList.getElement(n-1).damage;
         }else if(playerID == 2){
-            this.enemyHealth -= n;
+            this.enemyHealth -= cardList.getElement(n-1).damage;
         }
+*/
 
-
-        System.out.println("Damage points received :"+ n);
+        System.out.println("Damage points received :"+ cardList.getElement(n-1).damage);
 
         //this.enemyHealth -= this.circularCardList.getElement(n-1).getDamage();//gets the damage of the card and decreases the health of enemy
         //this.lbl_enemy_health_status.setText(String.valueOf(this.enemyHealth)); //shows the damage of enemy in a label
         //System.out.println("Your health is " + this.enemyHealth + " health");
+        this.lbl_health_status.setText(String.valueOf(this.health));//shows the value of health in a label
         if (playerID == 1){
             System.out.println("Your health is: " +this.health);
         }else {
@@ -345,6 +373,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         Button b = (Button) actionEvent.getSource();// gets the button that was pressed
         System.out.println("Pressed button: " + b);
         int bNum = Integer.parseInt(b.getId());
+        notifyListener("Player" + playerID+" used card #"+ this.circularCardList.getElement(bNum-1).id);
         System.out.println("You clicked button #"+bNum+" Now wait for player #"+otherPlayer);
         turnsMade ++;
         System.out.println("Turns made " + turnsMade);
@@ -352,7 +381,11 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         toggleButtons(); //enables and disables the interface when other player has to select a card
         //myPoints += values[bNum - 1];
         System.out.println(this.circularCardList.getElement(bNum-1).getCardInfo());
+        csc.sendButtonNum(this.circularCardList.getElement(bNum-1).id);
+        this.enemyHealth -= this.circularCardList.getElement(bNum-1).damage;
+
         System.out.println("Damage: " + this.circularCardList.getElement(bNum-1).getDamage());
+        System.out.println();
 
         int damage = this.circularCardList.getElement(bNum-1).getDamage();
         Card auxCard = this.circularCardList.getElement(bNum-1);
@@ -380,7 +413,7 @@ public class PlayerGUI extends Application implements EventHandler<ActionEvent> 
         //System.out.println("My health: "+this.health);
         //csc.sendButtonNum(bNum);
 
-        csc.sendDamage(damage);
+        //csc.sendDamage(damage);
 
         if (playerID == 2 && turnsMade == maxTurns){
             checkWinner();

@@ -1,7 +1,7 @@
 package cr.ac.tec.proyecto1.linearStructures;
 
 public class BattleLog {
-    Node head;
+    public Node head;
 
     class Node {
         Object data;
@@ -61,6 +61,10 @@ public class BattleLog {
             System.out.print(last.data + " ");
             last = last.prev;
         }
+    }
+
+    public Object getData(Node node) {
+        return node.data;
     }
 }
 

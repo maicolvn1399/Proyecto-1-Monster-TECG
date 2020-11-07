@@ -117,11 +117,11 @@ public class GameServer {
                 while (true){
                     if (this.playerID == 1){
                         playerOneButtonNum = dataIn.readInt();
-                        System.out.println("Player 1 clicked button #"+playerOneButtonNum);
+                        System.out.println("Player 1 used card #"+playerOneButtonNum);
                         player2.sendButtonNum(playerOneButtonNum);
                     }else {
                         playerTwoButtonNum = dataIn.readInt();
-                        System.out.println("Player 2 clicked button #" + playerTwoButtonNum);
+                        System.out.println("Player 2 used card #" + playerTwoButtonNum);
                         player1.sendButtonNum(playerTwoButtonNum);
                     }
                     turnsMade++;
